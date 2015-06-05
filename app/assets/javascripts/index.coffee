@@ -1,4 +1,4 @@
 $ ->
-  $.get "/bars", (data) ->
+  $.get "/chats", (data) ->
     $.each data, (index, item) ->
-      $("#bars").append "<li>Bar " + item.name + "</li>"
+      $("#message").append "  -" + item.msgFrom + ": " + item.message + "<br><br>"
