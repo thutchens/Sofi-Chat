@@ -8,4 +8,4 @@
 /.settings
 /db.h2.db
 /testdb.h2.db
-/.DS_Store
+.DS_Store
