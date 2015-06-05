@@ -1,0 +1,21 @@
+2015-06-04 01:53:02 -0600 - [INFO] - from play in play-internal-execution-context-2 
+Application started (Dev)
+
+2015-06-04 01:54:09 -0600 - [INFO] - from play in play-internal-execution-context-2 
+Application started (Dev)
+
+2015-06-04 01:57:47 -0600 - [INFO] - from play in play-internal-execution-context-2 
+Application started (Dev)
+
+2015-06-04 01:58:35 -0600 - [ERROR] - from controllers.Application in play-akka.actor.default-dispatcher-56 
+Application.java: tried to access chatroom without login
+
+2015-06-04 02:09:33 -0600 - [INFO] - from play in play-internal-execution-context-2 
+Application started (Dev)
+
+2015-06-04 02:09:33 -0600 - [ERROR] - from controllers.Application in play-akka.actor.default-dispatcher-57 
+Application.java: tried to access chatroom without login
+
+2015-06-04 02:09:43 -0600 - [ERROR] - from controllers.Application in play-akka.actor.default-dispatcher-61 
+Application.java: Invalid Username or password was entered
+

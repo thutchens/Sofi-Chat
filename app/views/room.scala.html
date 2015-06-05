@@ -1,0 +1,51 @@
+@(message: String,form: play.data.Form[Message])
+@implicitFieldConstructor = @{ helper.FieldConstructor(twitterBootstrapInput.render) }
+
+@main("Sofi Chat Room") {
+
+    <script src="@routes.Assets.at("javascripts/index.js")" type="text/javascript"></script>
+
+    <script>
+    window.setInterval("refreshDiv()", 1000);
+    function refreshDiv(){
+        var box = $('<label/>', {
+            id: 'message',
+            style: 'font-size: 15pt'
+        });
+
+        $.get("/chats", function(data) {
+            $.each(data, function(index, item) {
+                box.append("  -" + item.msgFrom + ": " + item.message + "<br><br>");
+            });
+
+            $('#message').replaceWith(box);
+        });
+    }
+    </script>
+
+    <div class="container">
+        <div class="navbar-inner">
+            <div class="container-fluid" id="titleBox">
+                <br>
+                <label style="font-size: 20pt" for="title">@message.toUpperCase</label>
+                <br>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="containter" id="pastMessages" style="padding:5px;">
+        <label id="message" style="font-size: 15pt"></label>
+    </div>
+
+    <div class="container" id="messageBox">
+
+        @helper.form(action = routes.Application.addMessage, 'class -> "well form-horizontal") {
+            @helper.inputText(form("message"), '_label -> "Enter Message: ")
+            <br>
+            <div class="controls">
+                <input type="submit" value="Send" style='width:100px'/>
+            </div>
+
+        }
+    </div>
+}

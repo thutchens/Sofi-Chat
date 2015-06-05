@@ -1,0 +1,32 @@
+body {
+    padding-top: 50px;
+
+}
+#messageBox {
+    width: 100%;
+    position:fixed;
+    height:130px;
+    bottom:0px;
+    left:0px;
+    right:0px;
+    margin-bottom:0px;
+}
+#titleBox {
+    width: 100%;
+    position:fixed;
+    height:75px;
+    top:0px;
+    left:0px;
+    right:0px;
+    margin-top:0px;
+    background-color:#E6E6E6;
+    opacity:1;
+}
+#pastMessages {
+    bottom:0;
+    width: 99%;
+    margin:auto;
+    margin-top:10px;
+    margin-bottom:105px;
+    background-color:#F2F2F2;
+}
