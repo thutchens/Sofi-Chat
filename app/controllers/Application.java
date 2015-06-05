@@ -14,11 +14,6 @@ import play.mvc.Result;
 import services.MessageService;
 import services.UserService;
 
-import play.*;
-import play.api.mvc.Session;
-import play.api.mvc.Cookie;
-import play.mvc.*;
-
 import views.html.*;
 
 @org.springframework.stereotype.Controller

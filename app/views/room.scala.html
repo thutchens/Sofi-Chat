@@ -23,7 +23,7 @@
     }
     </script>
 
-    <div class="container">
+    <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container-fluid" id="titleBox">
                 <br>
@@ -38,7 +38,6 @@
     </div>
 
     <div class="container" id="messageBox">
-
         @helper.form(action = routes.Application.addMessage, 'class -> "well form-horizontal") {
             @helper.inputText(form("message"), '_label -> "Enter Message: ")
             <br>
