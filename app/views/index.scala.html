@@ -15,15 +15,37 @@
         </div>
     </div>
     <br>
-    <div style="position:relative; top: 20px; width:100%;height:100%">
-        @helper.form(action = routes.Application.findUser, 'class -> "well row-fluid") {
-            @helper.inputText(form("userName"),
-                '_label -> "User Name: ",
-                'class -> "ui-state-default")
-            @helper.inputPassword(form("password"), '_label -> "Password: ")
+
+    <div class="collapse in" style="position:relative; top: 20px; width:100%;height:100%">
+        @helper.form(action = routes.Application.findUser, 'class -> "well row-fluid", 'id -> "loginForm") {
+            @helper.inputText(form("uName"),
+                '_label -> "User Name: ")
+            @helper.inputPassword(form("pword"), '_label -> "Password: ")
             <div class="controls">
-                <input type="submit" value="Login"/>
+                <input type="submit" class="btn visible-xs" value="Login"/>
             </div>
         }
     </div>
+<br>
+<br>
+        @helper.form(action = routes.Application.addUser, 'class -> "well row-fluid", 'id -> "registerForm") {
+            <div class="controls">
+                <input type="button" id="swap" class="btn visible-xs" data-toggle='collapse' data-target=".collapse" value="Register"/>
+            </div>
+            <br>
+            <div id="toggleDemo" class="collapse">
+            @helper.inputText(form("dName"),
+                '_label -> "Display Name: ",
+                'placeholder -> "Name you want others to see")
+            @helper.inputText(form("uName"),
+                '_label -> "User Name: ",
+                'placeholder -> "Login name")
+            @helper.inputPassword(form("pword"),
+                '_label -> "Password: ",
+                'placeholder -> "Login password")
+            <div class="controls">
+                <input type="submit" class="btn visible-xs"value="Submit"/>
+            </div>
+        </div>
+        }
 }

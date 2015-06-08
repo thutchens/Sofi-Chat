@@ -25,16 +25,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String findUser(User user) {
-        String displayName;
-        String userName = user.getUserName();
-        String password = user.getPassword();
-
-        Query query = em.createQuery("SELECT dName FROM User u WHERE u.userName = :uname AND u.password = :pword")
-                    .setParameter("uname", userName)
-                    .setParameter("pword", password);
+        Query query = em.createQuery("SELECT dName FROM User u WHERE u.uName = :uname AND u.pword = :pword")
+                    .setParameter("uname", user.getuName())
+                    .setParameter("pword", user.getPword());
 
         //Get all query results for error checking
         List results = query.getResultList();
+
+        String displayName;
 
         if (!results.isEmpty()){
             Object result = query.getSingleResult();

@@ -1,4 +1,4 @@
-name := "play-java-spring"
+name := "SofiChat"
 
 version := "1.0-SNAPSHOT"
 

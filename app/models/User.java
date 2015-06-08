@@ -17,22 +17,14 @@ public class User {
 
     @play.data.validation.Constraints.Required
     @Column(name = "userName")
-    private String userName;
+    private String uName;
 
     @play.data.validation.Constraints.Required
     @Column(name = "password")
-    private String password;
+    private String pword;
 
     @Column(name = "displayName")
     private String dName;
-
-    public String getdName() {
-        return dName;
-    }
-
-    public void setdName(String dName) {
-        this.dName = dName;
-    }
 
     public int getId() {
         return id;
@@ -42,20 +34,28 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getuName() {
+        return uName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setuName(String uName) {
+        this.uName = uName;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPword() {
+        return pword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPword(String pword) {
+        this.pword = pword;
+    }
+
+    public String getdName() {
+        return dName;
+    }
+
+    public void setdName(String dName) {
+        this.dName = dName;
     }
 
 }

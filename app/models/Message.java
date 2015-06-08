@@ -19,7 +19,7 @@ public class Message {
 
     @Constraints.Required(message = "No message was entered")
     @Column(name="Message")
-    private String message;
+    private String msg;
 
     @Column(name="msg_from")
     private String msgFrom;
@@ -41,10 +41,10 @@ public class Message {
     }
 
     public String getMessage() {
-        return message;
+        return msg;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.msg = message;
     }
 }

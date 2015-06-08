@@ -10,6 +10,7 @@ import static play.test.Helpers.*;
 
 public class ApplicationTest {
 
+    //Tests that the index page can be reached
     @Test
     public void callLogin() {
         Result result = callAction(controllers.routes.ref.Application.index());
@@ -19,6 +20,7 @@ public class ApplicationTest {
         assertThat(contentAsString(result)).contains("Sofi Chat Room");
     }
 
+    //Tests that the chat room can be reached
     @Test
     public void callChatroom() {
         Result result = callAction(controllers.routes.ref.Application.chatroom());
@@ -26,44 +28,6 @@ public class ApplicationTest {
         assertThat(contentType(result)).isEqualTo("text/html");
         assertThat(charset(result)).isEqualTo("utf-8");
         assertThat(contentAsString(result)).contains("Sofi Chat Room");
-    }
-
-    @Test
-    public void userRoute() {
-        running(fakeApplication(), new Runnable() {
-            @Override
-            public void run() {
-                Result result = route(fakeRequest(POST, "/users"));
-                assertThat(result).isNotNull();
-            }
-        });
-    }
-
-    @Test
-    public void getChatsRoute() {
-        running(fakeApplication(), new Runnable() {
-            @Override
-            public void run() {
-                Result result = route(fakeRequest(GET, "/chats"));
-                assertThat(result).isNotNull();
-            }
-        });
-    }
-
-    @Test
-    public void callAddMessage() {
-        running(fakeApplication(), new Runnable() {
-            @Override
-            public void run() {
-                Map<String, String> formParams = new HashMap<String, String>();
-                formParams.put("name", "foo");
-
-                FakeRequest fakeRequest = fakeRequest().withFormUrlEncodedBody(formParams);
-
-                Result result = callAction(controllers.routes.ref.Application.addMessage(), fakeRequest);
-                assertThat(status(result)).isEqualTo(SEE_OTHER);
-            }
-        });
     }
 
     /*

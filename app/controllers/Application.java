@@ -11,6 +11,8 @@ import play.data.Form;
 import play.libs.Json;
 import play.mvc.Result;
 
+import java.util.Map;
+
 import services.MessageService;
 import services.UserService;
 
@@ -38,7 +40,7 @@ public class Application extends play.mvc.Controller{
 
         if (session("name") == null) {
             log.error("chatroom(): tried to access chatroom without login");
-            return ok(index.render("Sofi Chat Room", Form.form(User.class)));
+            return redirect(controllers.routes.Application.index());
         }
 
         log.info("chatroom(): Accessed the Chatroom page");
