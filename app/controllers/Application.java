@@ -20,7 +20,7 @@ import services.UserService;
 import views.html.*;
 
 @org.springframework.stereotype.Controller
-public class Application extends play.mvc.Controller{
+public class Application extends play.mvc.Controller {
 
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
@@ -37,11 +37,11 @@ public class Application extends play.mvc.Controller{
         log.info("index(): Accessed the login page");
 
         if (invalidUser == false) {
-            return ok(index.render("",Form.form(User.class)));
+            return ok(index.render("", Form.form(User.class)));
         }
 
         invalidUser = false;
-        return ok(index.render("Error: Invalid Username or Password",Form.form(User.class)));
+        return ok(index.render("Error: Invalid Username or Password", Form.form(User.class)));
     }
 
     // Loads the chatroom
@@ -76,7 +76,7 @@ public class Application extends play.mvc.Controller{
         if (form.data().get("uName").isEmpty() || form.data().get("pword").isEmpty()) {
             form.hasErrors();
             log.error("findUser(): Username or password was not entered");
-            return badRequest(index.render("",form));
+            return badRequest(index.render("", form));
         }
 
         User user = new User();

@@ -17,24 +17,25 @@ import org.junit.Test;
 import play.mvc.Result;
 import static play.test.Helpers.*;
 
-
-@ContextConfiguration(classes={AppConfig.class, TestDataConfig.class})
+@ContextConfiguration(classes = {
+    AppConfig.class, TestDataConfig.class
+})
 public class MessageTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
     private MessageService messageService;
 
-    //Test that a message can be added
+    // Test that a message can be added
     @Test
     public void callAddMessage() {
-            Message msg = new Message();
-            msg.setMsg("test");
-            msg.setMsgFrom("tester");
-            messageService.addMessage(msg);
-            assertThat(msg.getId()).isNotNull();
+        Message msg = new Message();
+        msg.setMsg("test");
+        msg.setMsgFrom("tester");
+        messageService.addMessage(msg);
+        assertThat(msg.getId()).isNotNull();
     }
 
-    //Tests that chat messages can be found
+    // Tests that chat messages can be found
     @Test
     public void getChatsRoute() {
         running(fakeApplication(), new Runnable() {

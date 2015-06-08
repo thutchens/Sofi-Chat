@@ -18,13 +18,15 @@ import org.junit.Test;
 
 import play.mvc.Result;
 
-@ContextConfiguration(classes={AppConfig.class, TestDataConfig.class})
-public class UserTest extends AbstractTransactionalJUnit4SpringContextTests{
+@ContextConfiguration(classes = {
+    AppConfig.class, TestDataConfig.class
+})
+public class UserTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
     private UserService userService;
 
-    //Tests that a user can be found
+    // Tests that a user can be found
     @Test
     public void userRoute() {
         running(fakeApplication(), new Runnable() {
@@ -36,7 +38,7 @@ public class UserTest extends AbstractTransactionalJUnit4SpringContextTests{
         });
     }
 
-    //Test to make sure a user can be added
+    // Test to make sure a user can be added
     @Test
     public void callAddUser() {
         User user = new User();

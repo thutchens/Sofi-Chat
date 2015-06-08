@@ -10,8 +10,7 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 public class TestDataConfig extends DataConfig {
 
-    //Create temporary database for testing so production database is not used
-
+    // Create temporary database for testing so production database is not used
     @Bean
     @Override
     public DataSource dataSource() {

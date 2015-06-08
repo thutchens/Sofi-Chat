@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 
 @Service
 @Transactional
-public class MessageServiceImpl implements MessageService{
+public class MessageServiceImpl implements MessageService {
 
     @PersistenceContext
     private EntityManager em;
@@ -26,7 +26,9 @@ public class MessageServiceImpl implements MessageService{
 
     @Override
     public List<Message> getMessages() {
-        List<Message> messages = em.createQuery("SELECT m FROM Message m").getResultList();
-        return Lists.reverse(messages);
+        List<Message> messages = em.createQuery("SELECT m FROM Message m order by m.id DESC")
+                                   .setMaxResults(50)
+                                   .getResultList();
+        return messages;
     }
 }

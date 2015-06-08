@@ -26,19 +26,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public String findUser(User user) {
         Query query = em.createQuery("SELECT dName FROM User u WHERE u.uName = :uname AND u.pword = :pword")
-                    .setParameter("uname", user.getuName())
-                    .setParameter("pword", user.getPword());
+                        .setParameter("uname", user.getuName())
+                        .setParameter("pword", user.getPword());
 
-        //Get all query results for error checking
+        // Get all query results for error checking
         List results = query.getResultList();
 
         String displayName;
 
-        if (!results.isEmpty()){
+        if (!results.isEmpty()) {
             Object result = query.getSingleResult();
             displayName = (String)(result);
         }
-        else{
+        else {
             displayName = null;
         }
 

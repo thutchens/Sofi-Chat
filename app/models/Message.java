@@ -14,14 +14,14 @@ public class Message {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name="msgID")
+    @Column(name = "msgID")
     int id;
 
     @Constraints.Required(message = "No message was entered")
-    @Column(name="Message")
+    @Column(name = "Message")
     private String msg;
 
-    @Column(name="msg_from")
+    @Column(name = "msg_from")
     private String msgFrom;
 
     public int getId() {
@@ -47,6 +47,5 @@ public class Message {
     public void setMsgFrom(String msgFrom) {
         this.msgFrom = msgFrom;
     }
-
 
 }
