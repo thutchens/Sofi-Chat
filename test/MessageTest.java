@@ -1,39 +1,37 @@
+import configs.AppConfig;
+
+import models.Message;
+
+import services.MessageService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.ContextConfiguration;
 import static play.test.Helpers.GET;
 import static play.test.Helpers.route;
-
 import static org.fest.assertions.Assertions.assertThat;
-import static play.mvc.Http.Status.SEE_OTHER;
-import static play.test.Helpers.callAction;
 import static play.test.Helpers.fakeApplication;
-import static play.test.Helpers.fakeRequest;
 import static play.test.Helpers.running;
-import static play.test.Helpers.status;
 import org.junit.Test;
 
 import play.mvc.Result;
-import play.test.FakeRequest;
-
-import java.util.HashMap;
-import java.util.Map;
+import static play.test.Helpers.*;
 
 
-public class MessageTest {
+@ContextConfiguration(classes={AppConfig.class, TestDataConfig.class})
+public class MessageTest extends AbstractTransactionalJUnit4SpringContextTests {
 
-    //Tests that chat messages can be added
+    @Autowired
+    private MessageService messageService;
+
+    //Test that a message can be added
     @Test
     public void callAddMessage() {
-        running(fakeApplication(), new Runnable() {
-            @Override
-            public void run() {
-                Map<String, String> formParams = new HashMap<String, String>();
-                formParams.put("name", "foo");
-
-                FakeRequest fakeRequest = fakeRequest().withFormUrlEncodedBody(formParams);
-
-                Result result = callAction(controllers.routes.ref.Application.addMessage(), fakeRequest);
-                assertThat(status(result)).isEqualTo(SEE_OTHER);
-            }
-        });
+            Message msg = new Message();
+            msg.setMsg("test");
+            msg.setMsgFrom("tester");
+            messageService.addMessage(msg);
+            assertThat(msg.getId()).isNotNull();
     }
 
     //Tests that chat messages can be found

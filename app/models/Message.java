@@ -24,14 +24,6 @@ public class Message {
     @Column(name="msg_from")
     private String msgFrom;
 
-    public String getMsgFrom() {
-        return msgFrom;
-    }
-
-    public void setMsgFrom(String msgFrom) {
-        this.msgFrom = msgFrom;
-    }
-
     public int getId() {
         return id;
     }
@@ -40,11 +32,21 @@ public class Message {
         this.id = id;
     }
 
-    public String getMessage() {
+    public String getMsg() {
         return msg;
     }
 
-    public void setMessage(String message) {
-        this.msg = message;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
+
+    public String getMsgFrom() {
+        return msgFrom;
+    }
+
+    public void setMsgFrom(String msgFrom) {
+        this.msgFrom = msgFrom;
+    }
+
+
 }

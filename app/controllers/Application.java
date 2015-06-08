@@ -11,6 +11,7 @@ import play.data.Form;
 import play.libs.Json;
 import play.mvc.Result;
 
+import java.io.Console;
 import java.util.Map;
 
 import services.MessageService;
@@ -29,22 +30,29 @@ public class Application extends play.mvc.Controller{
     @Autowired
     private MessageService messageService;
 
+    private boolean invalidUser = false;
+
     // Loads the login page
     public Result index() {
         log.info("index(): Accessed the login page");
-        return ok(index.render("Sofi Chat Room", Form.form(User.class)));
+
+        if (invalidUser == false) {
+            return ok(index.render("",Form.form(User.class)));
+        }
+
+        invalidUser = false;
+        return ok(index.render("Error: Invalid Username or Password",Form.form(User.class)));
     }
 
     // Loads the chatroom
     public Result chatroom() {
-
         if (session("name") == null) {
             log.error("chatroom(): tried to access chatroom without login");
             return redirect(controllers.routes.Application.index());
         }
 
         log.info("chatroom(): Accessed the Chatroom page");
-        return ok(room.render("Sofi Chat Room", Form.form(Message.class)));
+        return ok(room.render(Form.form(Message.class)));
     }
 
     public Result addUser() {
@@ -52,7 +60,7 @@ public class Application extends play.mvc.Controller{
 
         if (form.hasErrors()) {
             log.error("addUser(): Username or password was not entered");
-            return badRequest(index.render("Sofi Chat Room", form));
+            return badRequest(index.render("", form));
         }
 
         User user = form.get();
@@ -65,18 +73,22 @@ public class Application extends play.mvc.Controller{
         Form<User> form = Form.form(User.class).bindFromRequest();
 
         // If an entry is left blank
-        if (form.hasErrors()) {
+        if (form.data().get("uName").isEmpty() || form.data().get("pword").isEmpty()) {
+            form.hasErrors();
             log.error("findUser(): Username or password was not entered");
-            return badRequest(index.render("Sofi Chat Room", form));
+            return badRequest(index.render("",form));
         }
 
-        User user = form.get();
+        User user = new User();
+        user.setuName(form.data().get("uName"));
+        user.setPword(form.data().get("pword"));
         String displayName = userService.findUser(user);
 
         // If the user is not found
         if (displayName == null) {
             log.error("findUser(): Invalid Username or password was entered");
-            return badRequest(index.render("Error: Invalid Username or Password", form));
+            invalidUser = true;
+            return redirect(controllers.routes.Application.index());
         }
 
         // Stores the display name
@@ -90,7 +102,7 @@ public class Application extends play.mvc.Controller{
 
         if (form.hasErrors()) {
             log.error("addMessage(): No message was entered");
-            return badRequest(room.render("Sofi Chat Room", form));
+            return badRequest(room.render(form));
         }
 
         Message msg = form.get();

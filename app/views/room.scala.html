@@ -1,4 +1,4 @@
-@(message: String,form: play.data.Form[Message])
+@(form: play.data.Form[Message])
 @implicitFieldConstructor = @{ helper.FieldConstructor(twitterBootstrapInput.render) }
 
 @main("Sofi Chat Room") {
@@ -15,7 +15,7 @@
 
         $.get("/chats", function(data) {
             $.each(data, function(index, item) {
-                box.append("  -" + item.msgFrom + ": " + item.message + "<br><br>");
+                box.append("  -" + item.msgFrom + ": " + item.msg + "<br><br>");
             });
 
             $('#message').replaceWith(box);
@@ -27,7 +27,7 @@
         <div class="navbar-inner">
             <div class="container-fluid" id="titleBox">
                 <br>
-                <label style="font-size: 20pt" for="title">@message.toUpperCase</label>
+                <label style="font-size: 20pt" for="title">SoFi Chat Room</label>
                 <br>
             </div>
         </div>
@@ -39,7 +39,7 @@
 
     <div class="container" id="messageBox">
         @helper.form(action = routes.Application.addMessage, 'class -> "well form-horizontal") {
-            @helper.inputText(form("message"), '_label -> "Enter Message: ")
+            @helper.inputText(form("msg"), '_label -> "Enter Message: ")
             <br>
             <div class="controls">
                 <input type="submit" class="btn visible-xs" value="Send" style='width:100px'/>

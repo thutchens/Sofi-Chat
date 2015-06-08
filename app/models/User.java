@@ -23,6 +23,7 @@ public class User {
     @Column(name = "password")
     private String pword;
 
+    @play.data.validation.Constraints.Required
     @Column(name = "displayName")
     private String dName;
 

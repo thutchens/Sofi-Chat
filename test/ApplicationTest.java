@@ -1,89 +1,67 @@
-import org.junit.Test;
-import play.mvc.Result;
-import play.test.FakeRequest;
+import configs.AppConfig;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.ContextConfiguration;
+import org.junit.Test;
+
+import play.libs.ws.WS;
+import play.mvc.Result;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static play.test.Helpers.*;
 
-public class ApplicationTest {
+@ContextConfiguration(classes={AppConfig.class, TestDataConfig.class})
+public class ApplicationTest extends AbstractTransactionalJUnit4SpringContextTests{
 
     //Tests that the index page can be reached
     @Test
-    public void callLogin() {
-        Result result = callAction(controllers.routes.ref.Application.index());
-        assertThat(status(result)).isEqualTo(OK);
-        assertThat(contentType(result)).isEqualTo("text/html");
-        assertThat(charset(result)).isEqualTo("utf-8");
-        assertThat(contentAsString(result)).contains("Sofi Chat Room");
+    public void loginRoute() {
+        running(fakeApplication(), new Runnable() {
+            public void run() {
+                Result result = route(fakeRequest(GET, "/"));
+                assertThat(result).isNotNull();
+                assertThat(status(result)).isEqualTo(OK);
+                assertThat(contentType(result)).isEqualTo("text/html");
+                assertThat(charset(result)).isEqualTo("utf-8");
+                assertThat(contentAsString(result)).contains("Sofi Chat Room");
+            }
+        });
     }
 
     //Tests that the chat room can be reached
     @Test
-    public void callChatroom() {
-        Result result = callAction(controllers.routes.ref.Application.chatroom());
-        assertThat(status(result)).isEqualTo(OK);
-        assertThat(contentType(result)).isEqualTo("text/html");
-        assertThat(charset(result)).isEqualTo("utf-8");
-        assertThat(contentAsString(result)).contains("Sofi Chat Room");
-    }
-
-    /*
-    @Test
-    public void callAddBar() {
+    public void chatRoute() {
         running(fakeApplication(), new Runnable() {
             public void run() {
-                Map<String, String> formParams = new HashMap<String, String>();
-                formParams.put("name", "foo");
-
-                FakeRequest fakeRequest = fakeRequest().withFormUrlEncodedBody(formParams);
-
-                Result result = callAction(controllers.routes.ref.Application.addBar(), fakeRequest);
-                assertThat(status(result)).isEqualTo(SEE_OTHER);
-            }
-        });
-    }
-
-    @Test
-    public void callListBars() {
-        running(fakeApplication(), new Runnable() {
-            public void run() {
-                Map<String, String> formParams = new HashMap<String, String>();
-                formParams.put("name", "foo");
-
-                FakeRequest fakeRequest = fakeRequest().withFormUrlEncodedBody(formParams);
-
-                callAction(controllers.routes.ref.Application.addBar(), fakeRequest);
-
-                Result result = callAction(controllers.routes.ref.Application.listBars());
-                assertThat(status(result)).isEqualTo(OK);
-                assertThat(contentType(result)).isEqualTo("application/json");
-                assertThat(contentAsString(result)).startsWith("[");
-                assertThat(contentAsString(result)).contains("foo");
-            }
-        });
-    }
-
-    @Test
-    public void barsRoute() {
-        running(fakeApplication(), new Runnable() {
-            public void run() {
-                Result result = route(fakeRequest(GET, "/bars"));
+                Result result = route(fakeRequest(GET, "/chat").withSession("name", "test"));
                 assertThat(result).isNotNull();
+                assertThat(status(result)).isEqualTo(OK);
+                assertThat(contentType(result)).isEqualTo("text/html");
+                assertThat(charset(result)).isEqualTo("utf-8");
+                assertThat(contentAsString(result)).contains("Sofi Chat Room");
             }
         });
     }
 
+    //Make sure the index site is accessible through http
     @Test
-    public void realBarsRequest() {
+    public void realIndexRequest() {
         running(testServer(3333), new Runnable() {
             public void run() {
-                assertThat(WS.url("http://localhost:3333/bars").get().get(5, TimeUnit.SECONDS).getStatus()).isEqualTo(OK);
+                assertThat(WS.url("http://localhost:3333/").get().get(5, TimeUnit.SECONDS).getStatus()).isEqualTo(OK);
             }
         });
     }
-    */
 
+    //Make sure that the chat site is accessible through http
+    @Test
+    public void realUsersRequest() {
+        running(testServer(3333), new Runnable() {
+            public void run() {
+                assertThat(WS.url("http://localhost:3333/chat").get().get(5, TimeUnit.SECONDS).getStatus()).isEqualTo(OK);
+            }
+        });
+    }
 }
