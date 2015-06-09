@@ -1,8 +1,11 @@
 package models;
 
 public class UserLoginHTML {
+
+    @play.data.validation.Constraints.Required
     private String uName;
 
+    @play.data.validation.Constraints.Required
     private String pword;
 
     private String dName;

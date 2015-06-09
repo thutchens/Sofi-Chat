@@ -15,11 +15,9 @@ public class UserLogin {
     @Column(name = "userID")
     int id;
 
-    @play.data.validation.Constraints.Required
     @Column(name = "userName")
     private String uName;
 
-    @play.data.validation.Constraints.Required
     @Column(name = "password")
     private String pword;
 

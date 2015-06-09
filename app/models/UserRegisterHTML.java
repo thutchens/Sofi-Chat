@@ -2,10 +2,13 @@ package models;
 
 public class UserRegisterHTML {
 
+    @play.data.validation.Constraints.Required
     private String uNameR;
 
+    @play.data.validation.Constraints.Required
     private String pwordR;
 
+    @play.data.validation.Constraints.Required
     private String dNameR;
 
     public String getuNameR() {

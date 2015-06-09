@@ -15,15 +15,12 @@ public class UserRegister {
     @Column(name = "userID")
     int id;
 
-    @play.data.validation.Constraints.Required
     @Column(name = "userName")
     private String uNameR;
 
-    @play.data.validation.Constraints.Required
     @Column(name = "password")
     private String pwordR;
 
-    @play.data.validation.Constraints.Required
     @Column(name = "displayName")
     private String dNameR;
 

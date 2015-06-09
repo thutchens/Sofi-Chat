@@ -1,6 +1,10 @@
 package models;
 
+import play.data.validation.Constraints;
+
 public class MessageHTML {
+
+    @Constraints.Required(message = "No message was entered")
     private String msg;
 
     private String msgFrom;

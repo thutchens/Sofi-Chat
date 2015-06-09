@@ -4,11 +4,11 @@
 
 # Home page
 GET     /                           @controllers.Application.index
+GET     /chats                      @controllers.Application.getAllMessages
+GET     /chat                       @controllers.Application.chatroom
 POST    /login                      @controllers.Application.login
 POST    /usersAdd                   @controllers.Application.addUser
 POST    /chats                      @controllers.Application.addMessage
-GET     /chats                      @controllers.Application.getAllMessages
-GET     /chat                       @controllers.Application.chatroom
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

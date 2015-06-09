@@ -64,7 +64,7 @@ public class Application extends play.mvc.Controller {
         Form<UserRegisterHTML> form2 = Form.form(UserRegisterHTML.class).bindFromRequest();
 
         //If user tries to add new user but doesnt fill every field
-        if (form.hasErrors()) {
+        if (form2.hasErrors()) {
             log.debug("addUser(): Username, Displayname, or password was not entered");
             return badRequest(index.render(form, form2));
         }
@@ -87,7 +87,7 @@ public class Application extends play.mvc.Controller {
 
         // If an entry is left blank
         if (form.hasErrors()) {
-            log.debug("findUser(): Username or password was not entered");
+            log.info("findUser(): A login field was not filled: {}", form.errors());
             return badRequest(index.render(form, form2));
         }
 
@@ -97,12 +97,11 @@ public class Application extends play.mvc.Controller {
         login.setuName(user.getuName());
         login.setPword(user.getPword());
 
-
         String displayName = userLoginService.getDisplayName(login);
 
         // If the user is not found go back to same page with error message
         if (displayName == null) {
-            log.debug("findUser(): Invalid Username or password was entered");
+            log.info("findUser(): Invalid Username or password was entered");
             form.reject("invalidUser","Error: Invalid Username or Password");
             return badRequest(index.render(form, form2));
         }
@@ -118,7 +117,7 @@ public class Application extends play.mvc.Controller {
 
         //if user tries to submit message but nothing is entered
         if (form.hasErrors()) {
-            log.debug("addMessage(): No message was entered");
+            log.info("addMessage(): No message was entered: {}", form.errors());
             return badRequest(room.render(form));
         }
 

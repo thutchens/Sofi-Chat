@@ -17,7 +17,6 @@ public class Message {
     @Column(name = "msgID")
     private int id;
 
-    @Constraints.Required(message = "No message was entered")
     @Column(name = "Message")
     private String msg;
 
