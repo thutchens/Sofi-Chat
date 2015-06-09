@@ -15,7 +15,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "msgID")
-    int id;
+    private int id;
 
     @Constraints.Required(message = "No message was entered")
     @Column(name = "Message")

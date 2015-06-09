@@ -5,7 +5,6 @@ import models.User;
 import services.UserService;
 
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
-
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.fest.assertions.Assertions.assertThat;
@@ -17,22 +16,39 @@ import static play.test.Helpers.running;
 import org.junit.Test;
 
 import play.mvc.Result;
+import play.test.FakeRequest;
 
-@ContextConfiguration(classes = {
-    AppConfig.class, TestDataConfig.class
-})
+import java.util.HashMap;
+
+import play.data.Form;
+import play.libs.ws.WS;
+import play.twirl.api.Html;
+
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import static play.test.Helpers.*;
+
+@ContextConfiguration(classes = { AppConfig.class, TestDataConfig.class })
 public class UserTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
     private UserService userService;
 
     // Tests that a user can be found
+    //controller test
     @Test
     public void userRoute() {
         running(fakeApplication(), new Runnable() {
             @Override
             public void run() {
-                Result result = route(fakeRequest(POST, "/users"));
+                Map<String, String> formParams = new HashMap<String, String>();
+                formParams.put("userName", "foo");
+                formParams.put("password", "foo");
+                formParams.put("displayName", "foo");
+
+                FakeRequest fakeRequest = fakeRequest().withFormUrlEncodedBody(formParams);
+
+                Result result = callAction(controllers.routes.ref.Application.addUser(), fakeRequest);
                 assertThat(result).isNotNull();
             }
         });

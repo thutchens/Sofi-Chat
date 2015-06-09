@@ -37,8 +37,7 @@ public class UserServiceImpl implements UserService {
         if (!results.isEmpty()) {
             Object result = query.getSingleResult();
             displayName = (String)(result);
-        }
-        else {
+        } else {
             displayName = null;
         }
 

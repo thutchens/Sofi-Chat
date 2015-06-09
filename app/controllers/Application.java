@@ -36,7 +36,7 @@ public class Application extends play.mvc.Controller {
     public Result index() {
         log.info("index(): Accessed the login page");
 
-        if (invalidUser == false) {
+        if (!invalidUser) {
             return ok(index.render("", Form.form(User.class)));
         }
 
@@ -46,8 +46,9 @@ public class Application extends play.mvc.Controller {
 
     // Loads the chatroom
     public Result chatroom() {
+        //If user has not logged in and therefore there is no session variable
         if (session("name") == null) {
-            log.error("chatroom(): tried to access chatroom without login");
+            log.debug("chatroom(): tried to access chatroom without login");
             return redirect(controllers.routes.Application.index());
         }
 
@@ -58,8 +59,9 @@ public class Application extends play.mvc.Controller {
     public Result addUser() {
         Form<User> form = Form.form(User.class).bindFromRequest();
 
+        //If user tries to add new user but doesnt fill every field
         if (form.hasErrors()) {
-            log.error("addUser(): Username or password was not entered");
+            log.error("addUser(): Username, Displayname, or password was not entered");
             return badRequest(index.render("", form));
         }
 
@@ -75,7 +77,9 @@ public class Application extends play.mvc.Controller {
         // If an entry is left blank
         if (form.data().get("uName").isEmpty() || form.data().get("pword").isEmpty()) {
             form.hasErrors();
-            log.error("findUser(): Username or password was not entered");
+            log.debug("findUser(): Username or password was not entered");
+
+            //form.reject("invalid username or password");
             return badRequest(index.render("", form));
         }
 
@@ -84,22 +88,24 @@ public class Application extends play.mvc.Controller {
         user.setPword(form.data().get("pword"));
         String displayName = userService.findUser(user);
 
-        // If the user is not found
+        // If the user is not found go back to same page with error message
         if (displayName == null) {
-            log.error("findUser(): Invalid Username or password was entered");
+            log.debug("findUser(): Invalid Username or password was entered");
+            form.reject("");
             invalidUser = true;
             return redirect(controllers.routes.Application.index());
         }
 
         // Stores the display name
         session("name", displayName);
-        log.info("findUser(): Saved display name: {} to the session", displayName);
+        log.info("findUser(): User is logged in and saved display name: {} to the session", displayName);
         return redirect(controllers.routes.Application.chatroom());
     }
 
     public Result addMessage() {
         Form<Message> form = Form.form(Message.class).bindFromRequest();
 
+        //if user tries to submit message but nothing is entered
         if (form.hasErrors()) {
             log.error("addMessage(): No message was entered");
             return badRequest(room.render(form));
