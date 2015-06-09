@@ -26,7 +26,7 @@ public class DataConfig {
         vendorAdapter.setShowSql(true);
         vendorAdapter.setGenerateDdl(true);
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactory.setPackagesToScan("models");
+        entityManagerFactory.setPackagesToScan("models", "models.db");
         entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
         entityManagerFactory.setDataSource(dataSource());
         entityManagerFactory.setJpaPropertyMap(new HashMap<String, String>(){{

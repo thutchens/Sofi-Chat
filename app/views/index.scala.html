@@ -1,4 +1,4 @@
-@(message: String, form: play.data.Form[User])
+@(form: play.data.Form[UserLoginHTML], form2: play.data.Form[UserRegisterHTML])
 @implicitFieldConstructor = @{ helper.FieldConstructor(twitterBootstrapInput.render) }
 
 @main("Sofi Chat Room") {
@@ -30,10 +30,13 @@
     <br>
 
     <div class="collapse in" style="position:relative; top: 20px; width:100%;height:100%">
-        @helper.form(action = routes.Application.findUser, 'class -> "well row-fluid", 'id -> "loginForm") {
-            <label style="color: #E60000; font-size: 16pt" for="title">@message</label>
-            @helper.inputText(form("uName"),
-                '_label -> "User Name: ")
+        @helper.form(action = routes.Application.login, 'class -> "well row-fluid", 'id -> "loginForm") {
+            @if(form.hasErrors()){
+                @for(error <- form("invalidUser").errors){
+                    <label style="color: #E60000; font-size: 16pt" for="title">Error: Invalid Username or Password</label>
+                }
+            }
+            @helper.inputText(form("uName"),'_label -> "User Name: ")
             @helper.inputPassword(form("pword"), '_label -> "Password: ")
             <div class="controls">
                 <input type="submit" class="btn visible-xs" value="Login"/>
@@ -48,13 +51,13 @@
             </div>
             <br>
             <div id="toggleDemo" class="collapse">
-            @helper.inputText(form("dName"),
+            @helper.inputText(form2("dNameR"),
                 '_label -> "Display Name: ",
                 'placeholder -> "Name you want others to see")
-            @helper.inputText(form("uName"),
+            @helper.inputText(form2("uNameR"),
                 '_label -> "User Name: ",
                 'placeholder -> "Login name")
-            @helper.inputPassword(form("pword"),
+            @helper.inputPassword(form2("pwordR"),
                 '_label -> "Password: ",
                 'placeholder -> "Login password")
             <div class="controls">

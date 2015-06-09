@@ -1,7 +1,12 @@
 package controllers;
 
-import models.User;
-import models.Message;
+import models.db.Message;
+import models.db.UserLogin;
+import models.db.UserRegister;
+
+import models.MessageHTML;
+import models.UserLoginHTML;
+import models.UserRegisterHTML;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
@@ -10,12 +15,14 @@ import org.slf4j.LoggerFactory;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Result;
+import play.api.data.validation.*;
 
 import java.io.Console;
 import java.util.Map;
 
 import services.MessageService;
-import services.UserService;
+import services.UserLoginService;
+import services.UserRegisterService;
 
 import views.html.*;
 
@@ -25,23 +32,19 @@ public class Application extends play.mvc.Controller {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
     @Autowired
-    private UserService userService;
+    private UserLoginService userLoginService;
+
+    @Autowired
+    private UserRegisterService userRegisterService;
 
     @Autowired
     private MessageService messageService;
 
-    private boolean invalidUser = false;
-
     // Loads the login page
     public Result index() {
-        log.info("index(): Accessed the login page");
+        log.debug("index(): Accessed the login page");
 
-        if (!invalidUser) {
-            return ok(index.render("", Form.form(User.class)));
-        }
-
-        invalidUser = false;
-        return ok(index.render("Error: Invalid Username or Password", Form.form(User.class)));
+        return ok(index.render(Form.form(UserLoginHTML.class),Form.form(UserRegisterHTML.class)));
     }
 
     // Loads the chatroom
@@ -53,47 +56,55 @@ public class Application extends play.mvc.Controller {
         }
 
         log.info("chatroom(): Accessed the Chatroom page");
-        return ok(room.render(Form.form(Message.class)));
+        return ok(room.render(Form.form(MessageHTML.class)));
     }
 
     public Result addUser() {
-        Form<User> form = Form.form(User.class).bindFromRequest();
+        Form<UserLoginHTML> form = Form.form(UserLoginHTML.class).bindFromRequest();
+        Form<UserRegisterHTML> form2 = Form.form(UserRegisterHTML.class).bindFromRequest();
 
         //If user tries to add new user but doesnt fill every field
         if (form.hasErrors()) {
-            log.error("addUser(): Username, Displayname, or password was not entered");
-            return badRequest(index.render("", form));
+            log.debug("addUser(): Username, Displayname, or password was not entered");
+            return badRequest(index.render(form, form2));
         }
 
-        User user = form.get();
-        userService.addUser(user);
+        UserRegisterHTML user = form2.get();
+
+        UserRegister reg = new UserRegister();
+        reg.setdNameR(user.getdNameR());
+        reg.setPwordR(user.getPwordR());
+        reg.setuNameR(user.getuNameR());
+
+        userRegisterService.addUser(reg);
         log.info("addUser(): Created new user");
         return redirect(controllers.routes.Application.index());
     }
 
-    public Result findUser() {
-        Form<User> form = Form.form(User.class).bindFromRequest();
+    public Result login() {
+        Form<UserLoginHTML> form = Form.form(UserLoginHTML.class).bindFromRequest();
+        Form<UserRegisterHTML> form2 = Form.form(UserRegisterHTML.class).bindFromRequest();
 
         // If an entry is left blank
-        if (form.data().get("uName").isEmpty() || form.data().get("pword").isEmpty()) {
-            form.hasErrors();
+        if (form.hasErrors()) {
             log.debug("findUser(): Username or password was not entered");
-
-            //form.reject("invalid username or password");
-            return badRequest(index.render("", form));
+            return badRequest(index.render(form, form2));
         }
 
-        User user = new User();
-        user.setuName(form.data().get("uName"));
-        user.setPword(form.data().get("pword"));
-        String displayName = userService.findUser(user);
+        UserLoginHTML user = form.get();
+
+        UserLogin login = new UserLogin();
+        login.setuName(user.getuName());
+        login.setPword(user.getPword());
+
+
+        String displayName = userLoginService.getDisplayName(login);
 
         // If the user is not found go back to same page with error message
         if (displayName == null) {
             log.debug("findUser(): Invalid Username or password was entered");
-            form.reject("");
-            invalidUser = true;
-            return redirect(controllers.routes.Application.index());
+            form.reject("invalidUser","Error: Invalid Username or Password");
+            return badRequest(index.render(form, form2));
         }
 
         // Stores the display name
@@ -103,18 +114,22 @@ public class Application extends play.mvc.Controller {
     }
 
     public Result addMessage() {
-        Form<Message> form = Form.form(Message.class).bindFromRequest();
+        Form<MessageHTML> form = Form.form(MessageHTML.class).bindFromRequest();
 
         //if user tries to submit message but nothing is entered
         if (form.hasErrors()) {
-            log.error("addMessage(): No message was entered");
+            log.debug("addMessage(): No message was entered");
             return badRequest(room.render(form));
         }
 
-        Message msg = form.get();
+        MessageHTML msg = form.get();
         msg.setMsgFrom(session("name"));
-        log.trace("addMessage(): Set the display name for messages to session name");
-        messageService.addMessage(msg);
+
+        Message mess = new Message();
+        mess.setMsg(msg.getMsg());
+        mess.setMsgFrom(msg.getMsgFrom());
+
+        messageService.addMessage(mess);
         log.debug("addMessage(): Added a new message to the database");
         return redirect(controllers.routes.Application.chatroom());
     }

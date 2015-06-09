@@ -1,6 +1,6 @@
 package services;
 
-import models.Message;
+import models.db.Message;
 
 import com.google.common.collect.Lists;
 
@@ -28,7 +28,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> getMessages() {
-        List<Message> messages = em.createQuery("SELECT m FROM Message m order by m.id DESC")
+        List<Message> messages = em.createQuery("SELECT m FROM Message m order by m.id DESC", Message.class)
                                    .setMaxResults(MAX_MESSAGES)
                                    .getResultList();
         return messages;

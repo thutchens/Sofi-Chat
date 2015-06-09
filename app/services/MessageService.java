@@ -1,6 +1,6 @@
 package services;
 
-import models.Message;
+import models.db.Message;
 
 import java.util.List;
 

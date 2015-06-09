@@ -4,7 +4,7 @@
 
 # Home page
 GET     /                           @controllers.Application.index
-POST    /users                      @controllers.Application.findUser
+POST    /login                      @controllers.Application.login
 POST    /usersAdd                   @controllers.Application.addUser
 POST    /chats                      @controllers.Application.addMessage
 GET     /chats                      @controllers.Application.getAllMessages
