@@ -2,12 +2,10 @@ package services;
 
 import models.db.Message;
 
-import com.google.common.collect.Lists;
-
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

@@ -1,11 +1,18 @@
 package models;
 
+import play.data.validation.Constraints.MaxLength;
+import play.data.validation.Constraints.Pattern;
+
 public class UserLoginHTML {
 
     @play.data.validation.Constraints.Required
+    @MaxLength(10)
+    @Pattern(value = "[\\S]+", message = "Cannot use spaces")
     private String uName;
 
     @play.data.validation.Constraints.Required
+    @MaxLength(10)
+    @Pattern(value = "[\\S]+", message = "Cannot use spaces")
     private String pword;
 
     private String dName;

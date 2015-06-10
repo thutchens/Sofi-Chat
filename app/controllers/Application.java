@@ -1,30 +1,26 @@
 package controllers;
 
-import models.db.Message;
-import models.db.UserLogin;
-import models.db.UserRegister;
-
 import models.MessageHTML;
 import models.UserLoginHTML;
 import models.UserRegisterHTML;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import play.data.Form;
-import play.libs.Json;
-import play.mvc.Result;
-import play.api.data.validation.*;
-
-import java.io.Console;
-import java.util.Map;
+import models.db.Message;
+import models.db.UserLogin;
+import models.db.UserRegister;
 
 import services.MessageService;
 import services.UserLoginService;
 import services.UserRegisterService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import play.data.Form;
+import play.libs.Json;
+import play.mvc.Result;
+
 import views.html.*;
+
 
 @org.springframework.stereotype.Controller
 public class Application extends play.mvc.Controller {
@@ -71,12 +67,19 @@ public class Application extends play.mvc.Controller {
 
         UserRegisterHTML user = form2.get();
 
-        UserRegister reg = new UserRegister();
-        reg.setdNameR(user.getdNameR());
-        reg.setPwordR(user.getPwordR());
-        reg.setuNameR(user.getuNameR());
+        if (userRegisterService.userNameExists(user.getuNameR())) {
+            log.info("userNameTaken(): Invalid Username or password was entered");
+            form2.reject("userName","Error: User Name already Exists");
+            return badRequest(index.render(form, form2));
+        }
 
-        userRegisterService.addUser(reg);
+        if (userRegisterService.displayNameExists(user.getdNameR())){
+            log.info("displayNameTaken(): Invalid Username or password was entered");
+            form2.reject("displayName","Error: Display Name already Exists");
+            return badRequest(index.render(form, form2));
+        }
+
+        userRegisterService.addUser(new UserRegister(user));
         log.info("addUser(): Created new user");
         return redirect(controllers.routes.Application.index());
     }
@@ -85,7 +88,7 @@ public class Application extends play.mvc.Controller {
         Form<UserLoginHTML> form = Form.form(UserLoginHTML.class).bindFromRequest();
         Form<UserRegisterHTML> form2 = Form.form(UserRegisterHTML.class).bindFromRequest();
 
-        // If an entry is left blank
+        // If a login entry is left blank
         if (form.hasErrors()) {
             log.info("findUser(): A login field was not filled: {}", form.errors());
             return badRequest(index.render(form, form2));
@@ -93,11 +96,7 @@ public class Application extends play.mvc.Controller {
 
         UserLoginHTML user = form.get();
 
-        UserLogin login = new UserLogin();
-        login.setuName(user.getuName());
-        login.setPword(user.getPword());
-
-        String displayName = userLoginService.getDisplayName(login);
+        String displayName = userLoginService.getDisplayName(new UserLogin(user));
 
         // If the user is not found go back to same page with error message
         if (displayName == null) {

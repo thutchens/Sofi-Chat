@@ -1,10 +1,12 @@
 package models;
 
 import play.data.validation.Constraints;
+import play.data.validation.Constraints.MaxLength;
 
 public class MessageHTML {
 
     @Constraints.Required(message = "No message was entered")
+    @MaxLength(255)
     private String msg;
 
     private String msgFrom;

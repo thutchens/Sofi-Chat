@@ -1,5 +1,7 @@
 package models.db;
 
+import models.UserRegisterHTML;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +25,12 @@ public class UserRegister {
 
     @Column(name = "displayName")
     private String dNameR;
+
+    public UserRegister(UserRegisterHTML user) {
+        this.uNameR = user.getuNameR();
+        this.pwordR = user.getPwordR();
+        this.dNameR = user.getdNameR();
+    }
 
     public int getId() {
         return id;

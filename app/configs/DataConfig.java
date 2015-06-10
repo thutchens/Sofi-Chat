@@ -29,9 +29,11 @@ public class DataConfig {
         entityManagerFactory.setPackagesToScan("models", "models.db");
         entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
         entityManagerFactory.setDataSource(dataSource());
-        entityManagerFactory.setJpaPropertyMap(new HashMap<String, String>(){{
-            put("hibernate.hbm2ddl.auto", "update");
-        }});
+        entityManagerFactory.setJpaPropertyMap(new HashMap<String, String>() {
+            {
+                put("hibernate.hbm2ddl.auto", "update");
+            }
+        });
         entityManagerFactory.afterPropertiesSet();
         return entityManagerFactory.getObject();
     }

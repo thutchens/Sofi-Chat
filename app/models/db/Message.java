@@ -1,6 +1,5 @@
 package models.db;
 
-import play.data.validation.Constraints;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

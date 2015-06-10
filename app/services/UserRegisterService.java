@@ -6,4 +6,8 @@ public interface UserRegisterService {
 
     void addUser(UserRegister user);
 
+    boolean userNameExists(String userName);
+
+    boolean displayNameExists(String displayName);
+
 }
